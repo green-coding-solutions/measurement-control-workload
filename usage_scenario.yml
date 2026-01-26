@@ -12,57 +12,73 @@ sci:
   R_d: Sysbench_event
 
 flow:
-  - name: Stress
+  - name: Stress 1 Thread
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=1 --time=0 --events=5000 --rate=0 --debug=off; echo GMT_SCI_R=5000
         note: Starting Sysbench Event bound - 5000 Events - 1 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 2 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=2 --time=0 --events=10000 --rate=0 --debug=off; echo GMT_SCI_R=10000
         note: Starting Sysbench Event bound - 10000 Events - 2 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 3 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=3 --time=0 --events=15000 --rate=0 --debug=off; echo GMT_SCI_R=15000
         note: Starting Sysbench Event bound - 15000 Events - 3 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 4 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=4 --time=0 --events=20000 --rate=0 --debug=off; echo GMT_SCI_R=20000
         note: Starting Sysbench Event bound - 20000 Events - 4 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 5 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=5 --time=0 --events=25000 --rate=0 --debug=off; echo GMT_SCI_R=25000
         note: Starting Sysbench Event bound - 25000 Events - 5 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 6 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=6 --time=0 --events=30000 --rate=0 --debug=off; echo GMT_SCI_R=30000
         note: Starting Sysbench Event bound - 30000 Events - 6 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Stress 7 Threads
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=7 --time=0 --events=35000 --rate=0 --debug=off; echo GMT_SCI_R=35000
         note: Starting Sysbench Event bound - 35000 Events - 7 Threads
-        log-stdout: True
         read-sci-stdout: True
+  - name: Sleep 120
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         command: sleep 120
         note: Sleep 120
+  - name: Stress 8 Threads Time Limit 600
+    container: gcb-alpine-sysbench
+    commands:
       - type: console
         shell: sh
         command: sysbench cpu run --cpu-max-prime=25000 --threads=8 --time=600 --events=0 --rate=0 --debug=off | gawk '/total number of events:/{print "GMT_SCI_R="$NF}'
         note: Starting Sysbench Time bound - 10 Minutes 8 Threads
-        log-stdout: True
         read-sci-stdout: True
