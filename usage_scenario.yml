@@ -8,8 +8,10 @@ services:
     image: gcb_alpine_sysbench
     build: .
 
-sci:
-  R_d: Sysbench_event
+custom_metrics:
+  sysbench_events:
+    unit: Events
+    sci: True
 
 flow:
   - name: Stress 1 Thread
@@ -17,57 +19,50 @@ flow:
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=1 --time=0 --events=5000 --rate=0 --debug=off; echo GMT_SCI_R=5000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=1 --time=0 --events=5000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=5000
         note: Starting Sysbench Event bound - 5000 Events - 1 Threads
-        read-sci-stdout: True
   - name: Stress 2 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=2 --time=0 --events=10000 --rate=0 --debug=off; echo GMT_SCI_R=10000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=2 --time=0 --events=10000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=10000
         note: Starting Sysbench Event bound - 10000 Events - 2 Threads
-        read-sci-stdout: True
   - name: Stress 3 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=3 --time=0 --events=15000 --rate=0 --debug=off; echo GMT_SCI_R=15000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=3 --time=0 --events=15000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=15000
         note: Starting Sysbench Event bound - 15000 Events - 3 Threads
-        read-sci-stdout: True
   - name: Stress 4 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=4 --time=0 --events=20000 --rate=0 --debug=off; echo GMT_SCI_R=20000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=4 --time=0 --events=20000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=20000
         note: Starting Sysbench Event bound - 20000 Events - 4 Threads
-        read-sci-stdout: True
   - name: Stress 5 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=5 --time=0 --events=25000 --rate=0 --debug=off; echo GMT_SCI_R=25000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=5 --time=0 --events=25000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=25000
         note: Starting Sysbench Event bound - 25000 Events - 5 Threads
-        read-sci-stdout: True
   - name: Stress 6 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=6 --time=0 --events=30000 --rate=0 --debug=off; echo GMT_SCI_R=30000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=6 --time=0 --events=30000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=30000
         note: Starting Sysbench Event bound - 30000 Events - 6 Threads
-        read-sci-stdout: True
   - name: Stress 7 Threads
     container: gcb-alpine-sysbench
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=7 --time=0 --events=35000 --rate=0 --debug=off; echo GMT_SCI_R=35000
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=7 --time=0 --events=35000 --rate=0 --debug=off; echo $(date +%s%N) sysbench_events=35000
         note: Starting Sysbench Event bound - 35000 Events - 7 Threads
-        read-sci-stdout: True
   - name: Sleep 120
     container: gcb-alpine-sysbench
     commands:
@@ -79,6 +74,5 @@ flow:
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=8 --time=600 --events=0 --rate=0 --debug=off | gawk '/total number of events:/{print "GMT_SCI_R="$NF}'
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=8 --time=600 --events=0 --rate=0 --debug=off | gawk '/total number of events:/ {cmd="date +%s%N"; cmd | getline ts; close(cmd); print ts " sysbench_events=" $NF}'
         note: Starting Sysbench Time bound - 10 Minutes 8 Threads
-        read-sci-stdout: True
