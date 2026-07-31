@@ -74,5 +74,5 @@ flow:
     commands:
       - type: console
         shell: sh
-        command: sysbench cpu run --cpu-max-prime=25000 --threads=8 --time=600 --events=0 --rate=0 --debug=off | gawk '/total number of events:/ {cmd="date +%s%N"; cmd | getline ts; close(cmd); print ts " sysbench_events=" $NF}'
+        command: sysbench cpu run --cpu-max-prime=25000 --threads=8 --time=600 --events=0 --rate=0 --debug=off | mawk '/total number of events:/ {cmd="date +%s%N"; cmd | getline ts; close(cmd); print ts " sysbench_events=" $NF}'
         note: Starting Sysbench Time bound - 10 Minutes 8 Threads
